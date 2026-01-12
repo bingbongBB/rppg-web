@@ -746,13 +746,13 @@ function drawWaveform(canvas, signal, color) {
     const w = width / 2;
     const h = height / 2;
 
-    // Background
-    ctx.fillStyle = '#1a1a25';
+    // Background (改為純白或淺灰)
+    ctx.fillStyle = '#f8f9fa';
     ctx.fillRect(0, 0, w, h);
 
-    // Draw grid
-    ctx.strokeStyle = '#2a2a35';
-    ctx.lineWidth = 0.5;
+    // Draw grid (改為淺色格線)
+    ctx.strokeStyle = '#e9ecef';
+    ctx.lineWidth = 1;
     for (let x = 0; x < w; x += 30) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -774,9 +774,10 @@ function drawWaveform(canvas, signal, color) {
     const max = Math.max(...samples);
     const range = max - min || 1;
 
-    // Draw waveform
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1.5;
+    // Draw waveform (使用深一點的綠色或原本顏色)
+    // 如果傳入的 color 太亮，這裡可以硬編碼成深一點的顏色，例如 '#00b894'
+    ctx.strokeStyle = '#00b894'; 
+    ctx.lineWidth = 2;
     ctx.beginPath();
 
     for (let i = 0; i < samples.length; i++) {
@@ -804,15 +805,12 @@ function drawECGWaveform(canvas, signal) {
     const w = width / 2;
     const h = height / 2;
 
-    // Dark purple background
-    const gradient = ctx.createLinearGradient(0, 0, 0, h);
-    gradient.addColorStop(0, '#14061a');
-    gradient.addColorStop(1, '#1e0f24');
-    ctx.fillStyle = gradient;
+    // Medical Graph Paper Background (醫療心電圖紙風格)
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, w, h);
 
-    // ECG paper grid
-    ctx.strokeStyle = 'rgba(100, 50, 80, 0.3)';
+    // Grid (細微的粉紅色或淺紅色格線)
+    ctx.strokeStyle = '#ffe0e0';
     ctx.lineWidth = 0.5;
     for (let x = 0; x < w; x += 25) {
         ctx.beginPath();
@@ -835,9 +833,9 @@ function drawECGWaveform(canvas, signal) {
     const max = Math.max(...samples);
     const range = max - min || 1;
 
-    // Draw ECG line (cyan)
-    ctx.strokeStyle = '#00ccff';
-    ctx.lineWidth = 2;
+    // Draw ECG line (改為深藍色或黑色，模仿真實儀器)
+    ctx.strokeStyle = '#0984e3'; // 深藍色
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
 
     for (let i = 0; i < samples.length; i++) {
@@ -853,11 +851,8 @@ function drawECGWaveform(canvas, signal) {
     }
     ctx.stroke();
 
-    // Glow effect
-    ctx.shadowColor = '#00ccff';
-    ctx.shadowBlur = 10;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
+    // 移除 Glow effect (在淺色背景下發光效果會讓線條變模糊)
+    // ctx.shadowColor = ... (移除)
 }
 
 function updateStatsDisplay(inferenceTime) {
